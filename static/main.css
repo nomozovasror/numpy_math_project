@@ -1,0 +1,11 @@
+.plot-div{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.plot-div_var{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}

@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 django = "*"
 numpy = "*"
-matplotlib = "*"
 scipy = "*"
+matplotlib = {extras = ["agg"], version = "*"}
 
 [dev-packages]
 

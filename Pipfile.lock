@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "684ec7d0b91b7d2e0dcb534ba905f543a4646e3d674fb06871006cbe8bd3cfdb"
+            "sha256": "7351fa86dc97f0cf0e6b845c93ee38ad81ddb1ae25002dfbd722c461761d2ed1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -184,6 +184,9 @@
             "version": "==1.4.4"
         },
         "matplotlib": {
+            "extras": [
+                "agg"
+            ],
             "hashes": [
                 "sha256:08308bae9e91aca1ec6fd6dda66237eef9f6294ddb17f0d0b3c863169bf82353",
                 "sha256:14645aad967684e92fc349493fa10c08a6da514b3d03a5931a1bac26e6792bd1",

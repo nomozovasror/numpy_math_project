@@ -2,6 +2,30 @@
 
 <form method="post" action="{% url 'index' %}">
   {% csrf_token %}
+  <label for="C0">Enter a C0:</label>
+  <input type="text" name="C0" required />
+
+  <label for="vm">Enter a vm:</label>
+  <input type="text" name="vm" required />
+
+  <label for="Dm">Enter a Dm:</label>
+  <input type="text" name="Dm" required />
+
+  <label for="n">Enter a n:</label>
+  <input type="text" name="n" required />
+
+  <label for="tau">Enter a tau:</label>
+  <input type="text" name="tau" required />
+
+  <label for="h">Enter a h:</label>
+  <input type="text" name="h" required />
+
+  <label for="tmax">Enter a tmax:</label>
+  <input type="text" name="tmax" required />
+
+  <label for="w">Enter a w:</label>
+  <input type="text" name="w" required />
+
   <label for="tetim">Enter a tetim:</label>
   <input type="text" name="tetim" required />
 
@@ -11,17 +35,40 @@
   <label for="gam">Enter a gam:</label>
   <input type="text" name="gam" required />
 
+  <label for="alpha">Enter a alpha:</label>
+  <input type="text" name="alpha" required />
+
+  <label for="bet">Enter a bet:</label>
+  <input type="text" name="bet" required />
+
   <button type="submit">Calculation</button>
 </form>
+<a href="{% url 'clear' %}">Reset data</a>
 
 {% comment %} {% if plot_data %}
   <img src="data:image/png;base64,{{ plot_data }}" alt="Histogram">
 {% endif %} {% endcomment %}
 
 
-{% for plot_data in plot_data_list %}
+{% for plot_data in plot_buffer_list %}
   <h2>Plot {{ forloop.counter }}</h2>
-  <img src="data:image/png;base64,{{ plot_data }}" alt="Histogram">
+  <div class="plot-div">
+    <img src="data:image/png;base64,{{ plot_data.plot_data }}" alt="Histogram">
+    <div class="plot-div_var">
+      <div>vm: {{ plot_data.vm }}</div>
+      <div>Dm: {{ plot_data.Dm }}</div>
+      <div>n: {{ plot_data.n }}</div>
+      <div>tau: {{ plot_data.tau }}</div>
+      <div>h: {{ plot_data.h }}</div>
+      <div>tmax: {{ plot_data.tmax }}</div>
+      <div>w: {{ plot_data.w }}</div>
+      <div>tetim: {{ plot_data.tetim }}</div>
+      <div>tetm: {{ plot_data.tetm }}</div>
+      <div>gam: {{ plot_data.gam }}</div>
+      <div>alpha: {{ plot_data.alpha }}</div>
+      <div>bet: {{ plot_data.bet }}</div>
+    </div>
+  </div>
 {% endfor %}
 
-{% endblock %} ```
+{% endblock %}

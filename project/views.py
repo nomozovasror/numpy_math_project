@@ -1,5 +1,7 @@
 from django.shortcuts import redirect, render
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
@@ -8,39 +10,34 @@ from scipy.special import gamma, factorial
 # Create your views here.
 
 plot_buffer_list = []
+plot_buffer_dict = {}
 
 def index(request):
 
-    global plot_buffer_list
+    global plot_buffer_list, plot_buffer_dict
 
     if request.method == 'POST':
-        C0 = 0.1
-        vm = 1e-4
-        Dm = 1e-5
-        n =20
-        tau = 1
-        h = 0.1
-        tmax =1600
-        w = 1e-5   # qarash kerak
 
-        # tetim =0.1 # qarash kerak
-        # tetm =0.4  # qarash kerak
-        # gam =0.6 # qarash kerak
+        C0 = float(request.POST.get('C0', 0.1))
+        vm = float(request.POST.get('vm', 1e-4))
+        Dm = float(request.POST.get('Dm', 1e-5))
+        n = int(request.POST.get('n', 20))
+        tau = float(request.POST.get('tau', 1))
+        h = float(request.POST.get('h', 0.1))
+        tmax = int(request.POST.get('tmax', 1600))
+        w = float(request.POST.get('w', 1e-5))  # qarash kerak
 
         tetim = float(request.POST.get('tetim', 0.1))
         tetm = float(request.POST.get('tetm', 0.1))
         gam = float(request.POST.get('gam', 0.1))
 
-        tet = tetim/tetm
-        alpha =1
-        bet =1.6
+        alpha = float(request.POST.get('alpha', 1))
+        bet = float(request.POST.get('bet', 0.1))
 
-        
         A = 1 + (w*gamma(2-alpha)*tau**alpha)/(gam*tetim)
-        #A1 =(gamma(2-alpha)*(tau**alpha))/(gam*tetim)
-        # boshlang`ich shartlar
-        Cm = np.zeros((tmax + 1, n+1))
-        Cim = np.zeros((tmax + 1, n+1))
+
+        Cm = np.zeros((int(tmax) + 1, n+1))
+        Cim = np.zeros((int(tmax) + 1, n+1))
 
         #Chegaraviy shartlar
         for k in range(tmax + 1):
@@ -90,7 +87,24 @@ def index(request):
             
         plot_data = base64.b64encode(buffer.read()).decode('utf-8')
 
-        plot_buffer_list.append(plot_data)
+        plot_dict = {
+            'C0': C0,
+            'vm': vm,
+            'Dm': Dm,
+            'n': n,
+            'tau': tau,
+            'h': h,
+            'tmax': tmax,
+            'w': w,
+            'tetim': tetim,
+            'tetm': tetm,
+            'gam': gam,
+            'alpha': alpha,
+            'bet': bet,
+            'plot_data': plot_data
+        }
+
+        plot_buffer_list.append(plot_dict)
 
         context = {
             'plot_data': plot_data,
@@ -98,6 +112,11 @@ def index(request):
         }
 
         return render(request, 'index.html', context)
+    return render(request, 'index.html')
 
 
-    
+def clear(request):
+    global plot_buffer_list, plot_buffer_dict
+    plot_buffer_list.clear()
+    plot_buffer_dict.clear()
+    return redirect('index')
