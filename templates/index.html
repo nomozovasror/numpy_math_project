@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block content %}
+
+<form method="post" action="{% url 'index' %}">
+  {% csrf_token %}
+  <label for="tetim">Enter a tetim:</label>
+  <input type="text" name="tetim" required />
+
+  <label for="tetm">Enter a tetm:</label>
+  <input type="text" name="tetm" required />
+
+  <label for="gam">Enter a gam:</label>
+  <input type="text" name="gam" required />
+
+  <button type="submit">Calculation</button>
+</form>
+
+{% comment %} {% if plot_data %}
+  <img src="data:image/png;base64,{{ plot_data }}" alt="Histogram">
+{% endif %} {% endcomment %}
+
+
+{% for plot_data in plot_data_list %}
+  <h2>Plot {{ forloop.counter }}</h2>
+  <img src="data:image/png;base64,{{ plot_data }}" alt="Histogram">
+{% endfor %}
+
+{% endblock %} ```
