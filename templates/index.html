@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'main.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -15,23 +16,22 @@
     />
   </head>
   <body>
-    <div id="loading-spinner" class="spinner-border text-primary" role="status"></div>
     <nav class="navbar navbar-expand-lg navbar-light"style="background-color: #e3f2fd;">
       <div class="container">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">TerDU</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="btn btn-outline-primary px-4 py-1 mx-1" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
+              <button class="btn btn-outline-primary px-4 py-1 mx-1" data-bs-toggle="modal" href="#exampleModalToggle" role="button" {% if length < 2 %}disabled{% endif %}><i class="fa-solid fa-arrow-right-arrow-left"></i> Solishtirish</button>
             </li>
             <li class="nav-item">
-              <a class="btn btn-outline-primary px-4 py-1 mx-1" data-bs-toggle="modal" href="#exampleModalToggle2" role="button">Open second modal</a>
+              <button class="btn btn-outline-primary px-4 py-1 mx-1" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fa-regular fa-clipboard"></i> Barcha natijalar</button>
             </li>
             <li class="nav-item">
-              <button type="button" class="btn btn-outline-primary px-4 py-1 mx-1">Primary</button>
+              <a href="{% url 'clear' %}" class="btn btn-outline-primary px-4 py-1 mx-1"><i class="fa-solid fa-trash"></i> O'chirish</a>
             </li>
           </ul>
         </div>
@@ -97,16 +97,13 @@
         </div>
         <div class="col-7 d-flex justify-content-center">
           <div class="diogram">
-            {% comment %} {% for plot_data in plot_buffer_list %}
-            <img src="data:image/png;base64,{{ plot_data.plot_data }}" alt="Histogram">
-            {% endfor %} {% endcomment %}
             {% if plot_data %}
               <img src="data:image/png;base64,{{ plot_data }}" alt="Histogram" style="width: 640px; height: 480px">
             {% endif %}
           </div>
         </div>
         <div class="col-2">
-          <p class="h6 mb-3">{{ C0 }}</p>
+          <p class="h6 mb-3">C0: {{ C0 }}</p>
           <p class="h6 mb-3">vm: {{ vm }}</p>
           <p class="h6 mb-3">Dm: {{ Dm }}</p>
           <p class="h6 mb-3">n: {{ n }}</p>
@@ -121,54 +118,133 @@
           <p class="h6 mb-3">bet: {{ bet }}</p>
         </div>
     </div>
-    
 
 
-    <!-- Modal 1 -->
+
     <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-      <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-dialog modal-fullscreen modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+            <h5 class="modal-title" id="exampleModalToggleLabel">Solishtirish</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            Show a second modal and hide this one with the button below.
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-10">
+                    {% if plot_data %}
+                      <img src="data:image/png;base64,{{ plot_data }}" alt="Histogram" class="img-fluid">
+                    {% endif %}
+                  </div>
+                  <div class="col-2">
+                    <p class="mb-3 {% if C0 > plot_1.C0 %}text-success{% elif C0 < plot_1.C0 %}text-danger{% else %}text-primary{% endif %}">C0: {{ C0 }}</p>
+                    <p class="mb-3 {% if vm > plot_1.vm %}text-success{% elif vm < plot_1.vm %}text-danger{% else %}text-primary{% endif %}">vm: {{ vm }}</p>
+                    <p class="mb-3 {% if Dm > plot_1.Dm %}text-success{% elif Dm < plot_1.Dm %}text-danger{% else %}text-primary{% endif %}">Dm: {{ Dm }}</p>
+                    <p class="mb-3 {% if n > plot_1.n %}text-success{% elif n < plot_1.n %}text-danger{% else %}text-primary{% endif %}">n: {{ n }}</p>
+                    <p class="mb-3 {% if tau > plot_1.tau %}text-success{% elif tau < plot_1.tau %}text-danger{% else %}text-primary{% endif %}">tau: {{ tau }}</p>
+                    <p class="mb-3 {% if h > plot_1.h %}text-success{% elif h < plot_1.h %}text-danger{% else %}text-primary{% endif %}">h: {{ h }}</p>
+                    <p class="mb-3 {% if tmax > plot_1.tmax %}text-success{% elif tmax < plot_1.tmax %}text-danger{% else %}text-primary{% endif %}">tmax: {{ tmax }}</p>
+                    <p class="mb-3 {% if w > plot_1.w %}text-success{% elif w < plot_1.w %}text-danger{% else %}text-primary{% endif %}">w: {{ w }}</p>
+                    <p class="mb-3 {% if tetim > plot_1.tetim %}text-success{% elif tetim < plot_1.tetim %}text-danger{% else %}text-primary{% endif %}">tetim: {{ tetim }}</p>
+                    <p class="mb-3 {% if tetm > plot_1.tetm %}text-success{% elif tetm < plot_1.tetm %}text-danger{% else %}text-primary{% endif %}">tetm: {{ tetm }}</p>
+                    <p class="mb-3 {% if gam > plot_1.gam %}text-success{% elif gam < plot_1.gam %}text-danger{% else %}text-primary{% endif %}">gam: {{ gam }}</p>
+                    <p class="mb-3 {% if alpha > plot_1.alpha %}text-success{% elif alpha < plot_1.alpha %}text-danger{% else %}text-primary{% endif %}">alpha: {{ alpha }}</p>
+                    <p class="mb-3 {% if bet > plot_1.bet %}text-success{% elif bet < plot_1.bet %}text-danger{% else %}text-primary{% endif %}">bet: {{ bet }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-2">
+                    <p class="mb-3 {% if C0 < plot_1.C0 %}text-success{% elif C0 > plot_1.C0 %}text-danger{% else %}text-primary{% endif %}">C0: {{ plot_1.C0 }}</p>
+                    <p class="mb-3 {% if vm < plot_1.vm %}text-success{% elif vm > plot_1.vm %}text-danger{% else %}text-primary{% endif %}">vm: {{ plot_1.vm }}</p>
+                    <p class="mb-3 {% if Dm < plot_1.Dm %}text-success{% elif Dm > plot_1.Dm %}text-danger{% else %}text-primary{% endif %}">Dm: {{ plot_1.Dm }}</p>
+                    <p class="mb-3 {% if n < plot_1.n %}text-success{% elif n > plot_1.n %}text-danger{% else %}text-primary{% endif %}">n: {{ plot_1.n }}</p>
+                    <p class="mb-3 {% if tau < plot_1.tau %}text-success{% elif tau > plot_1.tau %}text-danger{% else %}text-primary{% endif %}">tau: {{ plot_1.tau }}</p>
+                    <p class="mb-3 {% if h < plot_1.h %}text-success{% elif h > plot_1.h %}text-danger{% else %}text-primary{% endif %}">h: {{ plot_1.h }}</p>
+                    <p class="mb-3 {% if tmax < plot_1.tmax %}text-success{% elif tmax > plot_1.tmax %}text-danger{% else %}text-primary{% endif %}">tmax: {{ plot_1.tmax }}</p>
+                    <p class="mb-3 {% if w < plot_1.w %}text-success{% elif w > plot_1.w %}text-danger{% else %}text-primary{% endif %}">w: {{ plot_1.w }}</p>
+                    <p class="mb-3 {% if tetim < plot_1.tetim %}text-success{% elif tetim > plot_1.tetim %}text-danger{% else %}text-primary{% endif %}">tetim: {{ plot_1.tetim }}</p>
+                    <p class="mb-3 {% if tetm < plot_1.tetm %}text-success{% elif tetm > plot_1.tetm %}text-danger{% else %}text-primary{% endif %}">tetm: {{ plot_1.tetm }}</p>
+                    <p class="mb-3 {% if gam < plot_1.gam %}text-success{% elif gam > plot_1.gam %}text-danger{% else %}text-primary{% endif %}">gam: {{ plot_1.gam }}</p>
+                    <p class="mb-3 {% if alpha < plot_1.alpha %}text-success{% elif alpha > plot_1.alpha %}text-danger{% else %}text-primary{% endif %}">alpha: {{ plot_1.alpha }}</p>
+                    <p class="mb-3 {% if bet < plot_1.bet %}text-success{% elif bet > plot_1.bet %}text-danger{% else %}text-primary{% endif %}">bet: {{ plot_1.bet }}</p>
+                  </div>
+                  <div class="col-10">
+                    <img src="data:image/png;base64,{{ plot_1.plot_data }}" alt="plot" class="img-fluid">
+                  </div>
+              </div>
+            </div>
+          </div>
           </div>
           <div class="modal-footer">
-            footer
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal 2 -->
-    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalToggleLabel">Modal 2</h5>
+            <h5 class="modal-title" id="exampleModalToggleLabel2">Barcha natijalar</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            Show a second modal and hide this one with the button below.
+            {% for plot in plot_buffer_list %}
+            <div class="row">
+              <div class="col-10">
+                <img src="data:image/png;base64,{{ plot.plot_data }}" alt="plot" class="img-fluid">
+              </div>
+              <div class="col-2">
+                <p class="h6 mb-3">C0: {{ plot.C0 }}</p>
+                <p class="h6 mb-3">vm: {{ plot.vm }}</p>
+                <p class="h6 mb-3">Dm: {{ plot.Dm }}</p>
+                <p class="h6 mb-3">n: {{ plot.n }}</p>
+                <p class="h6 mb-3">tau: {{ plot.tau }}</p>
+                <p class="h6 mb-3">h: {{ plot.h }}</p>
+                <p class="h6 mb-3">tmax: {{ plot.tmax }}</p>
+                <p class="h6 mb-3">w: {{ plot.w }}</p>
+                <p class="h6 mb-3">tetim: {{ plot.tetim }}</p>
+                <p class="h6 mb-3">tetm: {{ plot.tetm }}</p>
+                <p class="h6 mb-3">gam: {{ plot.gam }}</p>
+                <p class="h6 mb-3">alpha: {{ plot.alpha }}</p>
+                <p class="h6 mb-3">bet: {{ plot.bet }}</p>
+              </div>
+            </div>
+            <hr>
+            {% endfor %}
           </div>
           <div class="modal-footer">
-            footer
+            <a href="{% url 'clear' %}" class="btn btn-outline-primary px-4 py-1 mx-1">Reset</a>
           </div>
         </div>
       </div>
     </div>
 
-    <script>
-      if (document.readyState == "complete") {
-          pass
-      }else{
-          window.addEventListener("load", function() {
-              var spinner = document.getElementById('loading-spinner');
-              spinner.style.display = 'none';
-          }, false);
-      }
+
+
+  <!--  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+
     </script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"

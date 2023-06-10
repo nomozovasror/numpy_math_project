@@ -106,6 +106,13 @@ def index(request):
 
         plot_buffer_list.append(plot_dict)
 
+        length = len(plot_buffer_list)
+
+        if length >= 2:
+            plot_1 = plot_buffer_list[length-2]
+        else:
+            plot_1 = plot_buffer_list[length-1]
+
         context = {
             "C0": C0,
             "vm": vm,
@@ -120,7 +127,9 @@ def index(request):
             "gam": gam,
             "alpha": alpha,
             "bet": bet,
+            "plot_1": plot_1,
             'plot_data': plot_data,
+            "length": length,
             'plot_buffer_list': plot_buffer_list
         }
 
