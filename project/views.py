@@ -107,6 +107,19 @@ def index(request):
         plot_buffer_list.append(plot_dict)
 
         context = {
+            "C0": C0,
+            "vm": vm,
+            "Dm": Dm,
+            "n": n,
+            "tau": tau,
+            "h": h,
+            "tmax": tmax,
+            "w": w,
+            "tetim": tetim,
+            "tetm": tetm,
+            "gam": gam,
+            "alpha": alpha,
+            "bet": bet,
             'plot_data': plot_data,
             'plot_buffer_list': plot_buffer_list
         }

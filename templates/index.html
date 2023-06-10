@@ -1,74 +1,184 @@
-{% extends 'base.html' %} {% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'main.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous".
+    />
+  </head>
+  <body>
+    <div id="loading-spinner" class="spinner-border text-primary" role="status"></div>
+    <nav class="navbar navbar-expand-lg navbar-light"style="background-color: #e3f2fd;">
+      <div class="container">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="btn btn-outline-primary px-4 py-1 mx-1" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-primary px-4 py-1 mx-1" data-bs-toggle="modal" href="#exampleModalToggle2" role="button">Open second modal</a>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="btn btn-outline-primary px-4 py-1 mx-1">Primary</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="box">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-3">
+          <form method="post" action="{% url 'index' %}">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-6">
+                <label class="form-label" for="C0">Enter a C0:</label>
+                <input class="form-control" type="text" name="C0" required />
 
-<form method="post" action="{% url 'index' %}">
-  {% csrf_token %}
-  <label for="C0">Enter a C0:</label>
-  <input type="text" name="C0" required />
+                <label class="form-label" for="vm">Enter a vm:</label>
+                <input class="form-control" type="text" name="vm" required />
 
-  <label for="vm">Enter a vm:</label>
-  <input type="text" name="vm" required />
+                <label class="form-label" for="Dm">Enter a Dm:</label>
+                <input class="form-control" type="text" name="Dm" required />
 
-  <label for="Dm">Enter a Dm:</label>
-  <input type="text" name="Dm" required />
+                <label class="form-label" for="n">Enter a n:</label>
+                <input class="form-control" type="text" name="n" required />
 
-  <label for="n">Enter a n:</label>
-  <input type="text" name="n" required />
+                <label class="form-label" for="tau">Enter a tau:</label>
+                <input class="form-control" type="text" name="tau" required />
 
-  <label for="tau">Enter a tau:</label>
-  <input type="text" name="tau" required />
+                <label class="form-label" for="h">Enter a h:</label>
+                <input class="form-control" type="text" name="h" required />
 
-  <label for="h">Enter a h:</label>
-  <input type="text" name="h" required />
+                <label class="form-label" for="tmax">Enter a tmax:</label>
+                <input class="form-control" type="text" name="tmax" required />
+              </div>
+              <div class="col-6 position-relative">
+                <label class="form-label" for="w">Enter a w:</label>
+                <input class="form-control" type="text" name="w" required />
 
-  <label for="tmax">Enter a tmax:</label>
-  <input type="text" name="tmax" required />
+                <label class="form-label" for="tetim">Enter a tetim:</label>
+                <input class="form-control" type="text" name="tetim" required />
 
-  <label for="w">Enter a w:</label>
-  <input type="text" name="w" required />
+                <label class="form-label" for="tetm">Enter a tetm:</label>
+                <input class="form-control" type="text" name="tetm" required />
 
-  <label for="tetim">Enter a tetim:</label>
-  <input type="text" name="tetim" required />
+                <label class="form-label" for="gam">Enter a gam:</label>
+                <input class="form-control" type="text" name="gam" required />
 
-  <label for="tetm">Enter a tetm:</label>
-  <input type="text" name="tetm" required />
+                <label class="form-label" for="alpha">Enter a alpha:</label>
+                <input class="form-control" type="text" name="alpha" required />
 
-  <label for="gam">Enter a gam:</label>
-  <input type="text" name="gam" required />
+                <label class="form-label" for="bet">Enter a bet:</label>
+                <input class="form-control" type="text" name="bet" required />
 
-  <label for="alpha">Enter a alpha:</label>
-  <input type="text" name="alpha" required />
-
-  <label for="bet">Enter a bet:</label>
-  <input type="text" name="bet" required />
-
-  <button type="submit">Calculation</button>
-</form>
-<a href="{% url 'clear' %}">Reset data</a>
-
-{% comment %} {% if plot_data %}
-  <img src="data:image/png;base64,{{ plot_data }}" alt="Histogram">
-{% endif %} {% endcomment %}
-
-
-{% for plot_data in plot_buffer_list %}
-  <h2>Plot {{ forloop.counter }}</h2>
-  <div class="plot-div">
-    <img src="data:image/png;base64,{{ plot_data.plot_data }}" alt="Histogram">
-    <div class="plot-div_var">
-      <div>vm: {{ plot_data.vm }}</div>
-      <div>Dm: {{ plot_data.Dm }}</div>
-      <div>n: {{ plot_data.n }}</div>
-      <div>tau: {{ plot_data.tau }}</div>
-      <div>h: {{ plot_data.h }}</div>
-      <div>tmax: {{ plot_data.tmax }}</div>
-      <div>w: {{ plot_data.w }}</div>
-      <div>tetim: {{ plot_data.tetim }}</div>
-      <div>tetm: {{ plot_data.tetm }}</div>
-      <div>gam: {{ plot_data.gam }}</div>
-      <div>alpha: {{ plot_data.alpha }}</div>
-      <div>bet: {{ plot_data.bet }}</div>
+                <label class="form-label" for="bet">.</label>
+                <input
+                  type="submit"
+                  class="form-control btn btn-primary"
+                  value="Hisoblash"
+                  name="submit"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-7 d-flex justify-content-center">
+          <div class="diogram">
+            {% comment %} {% for plot_data in plot_buffer_list %}
+            <img src="data:image/png;base64,{{ plot_data.plot_data }}" alt="Histogram">
+            {% endfor %} {% endcomment %}
+            {% if plot_data %}
+              <img src="data:image/png;base64,{{ plot_data }}" alt="Histogram" style="width: 640px; height: 480px">
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-2">
+          <p class="h6 mb-3">{{ C0 }}</p>
+          <p class="h6 mb-3">vm: {{ vm }}</p>
+          <p class="h6 mb-3">Dm: {{ Dm }}</p>
+          <p class="h6 mb-3">n: {{ n }}</p>
+          <p class="h6 mb-3">tau: {{ tau }}</p>
+          <p class="h6 mb-3">h: {{ h }}</p>
+          <p class="h6 mb-3">tmax: {{ tmax }}</p>
+          <p class="h6 mb-3">w: {{ w }}</p>
+          <p class="h6 mb-3">tetim: {{ tetim }}</p>
+          <p class="h6 mb-3">tetm: {{ tetm }}</p>
+          <p class="h6 mb-3">gam: {{ gam }}</p>
+          <p class="h6 mb-3">alpha: {{ alpha }}</p>
+          <p class="h6 mb-3">bet: {{ bet }}</p>
+        </div>
     </div>
-  </div>
-{% endfor %}
+    
 
-{% endblock %}
+
+    <!-- Modal 1 -->
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Show a second modal and hide this one with the button below.
+          </div>
+          <div class="modal-footer">
+            footer
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel">Modal 2</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Show a second modal and hide this one with the button below.
+          </div>
+          <div class="modal-footer">
+            footer
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      if (document.readyState == "complete") {
+          pass
+      }else{
+          window.addEventListener("load", function() {
+              var spinner = document.getElementById('loading-spinner');
+              spinner.style.display = 'none';
+          }, false);
+      }
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
